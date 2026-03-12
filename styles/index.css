@@ -1,0 +1,274 @@
+/* Reset & Variables */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --primary-color: #3c5ee3;
+    /* Deep Royal Blue */
+    --secondary-color: #3cf0ff;
+    /* Atmosphere Cyan */
+    --text-main: #ffffff;
+    --text-dim: #ccccff;
+    --bg-dark: #050505;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* Background Canvas */
+#bg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Main content area */
+main {
+    width: 50%;
+    padding: 5% 8%;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Hero Section */
+.hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 80vh;
+    background: transparent;
+}
+
+.hero-text h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    /* Subtle glow using secondary color */
+    text-shadow: 0 0 20px rgba(60, 240, 255, 0.2);
+    margin-bottom: 1rem;
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+}
+
+/* Section Titles */
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+}
+
+h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--secondary-color);
+    /* Uses secondary color for accent */
+    margin-top: 0.5rem;
+    border-radius: 2px;
+}
+
+/* About Section */
+.about p {
+    font-size: 1rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1s ease forwards;
+    animation-delay: 0.5s;
+}
+
+/* Projects Section */
+.projects {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.card {
+    /* Increase background opacity to 0.15 or 0.2 to block out the Earth's brightness */
+    background: rgba(10, 10, 20, 0.4);
+    padding: 1.5rem;
+    border-radius: 15px;
+    backdrop-filter: blur(12px);
+    /* Increased blur slightly */
+    border: 1px solid rgba(60, 240, 255, 0.2);
+    /* Use your secondary color for the border */
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    background: rgba(60, 94, 227, 0.1);
+    /* Primary tint on hover */
+    border-color: var(--secondary-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    /* Uses secondary color */
+    margin-bottom: 0.5rem;
+}
+
+.card p {
+    /* Use a pure white or very light grey for maximum contrast */
+    color: #f0f0f0;
+    line-height: 1.6;
+    font-weight: 400;
+    /* This shadow is the secret sauce for readability over images */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Contact Section */
+.contact p {
+    margin-bottom: 0.5rem;
+    color: var(--text-dim);
+}
+
+/* --- Skills Section Styling --- */
+
+.skills-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.skill-category {
+    background: rgba(60, 94, 227, 0.05); /* Very subtle primary tint */
+    padding: 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.skill-category h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.tag {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(60, 240, 255, 0.1);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.tag:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--secondary-color);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(60, 94, 227, 0.4);
+}
+
+/* Update the Social Links in Hero */
+.social-links {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.social-links a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+    border-bottom: 1px solid var(--secondary-color);
+    text-shadow: 0 0 10px var(--secondary-color);
+}
+
+/* Animations */
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Handling */
+@media (max-width: 1200px) {
+    #bg {
+        width: 40%;
+    }
+
+    main {
+        width: 60%;
+    }
+}
+
+@media (max-width: 768px) {
+    #bg {
+        width: 100%;
+        opacity: 0.8;
+        /* Slight dim to help text readability */
+    }
+
+    main {
+        width: 100%;
+        padding: 2rem;
+        background: transparent;
+    }
+
+    .hero-text h1,
+    .hero-text p,
+    h2,
+    .about p {
+        text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.9);
+    }
+
+    .hero-container {
+        min-height: 60vh;
+    }
+
+    .hero-text h1 {
+        font-size: 2.8rem;
+        color: var(--secondary-color);
+        /* Swapping to brighter color for mobile visibility */
+    }
+}
+
+/* Desktop Polish */
+@media (min-width: 769px) {
+    .hero-container {
+        background: linear-gradient(to right, rgba(5, 5, 5, 0.9), transparent);
+    }
+}
