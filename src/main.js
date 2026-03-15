@@ -108,10 +108,10 @@ scene.add(earthGroup);
 const geoEarth = new THREE.IcosahedronGeometry(2.5, 16);
 
 const earthMat = new THREE.MeshPhongMaterial({
-    map: loader.load('./src/earthmap1k.jpg'),
-    bumpMap: loader.load('./src/bump.jpg'),
+    map: loader.load('./assets/earthmap1k.jpg'),
+    bumpMap: loader.load('./assets/bump.jpg'),
     bumpScale: 0.25,
-    specularMap: loader.load('./src/spec.jpg'),
+    specularMap: loader.load('./assets/spec.jpg'),
     specular: new THREE.Color('grey'),
     shininess: 15,
 });
@@ -119,9 +119,9 @@ const earthMesh = new THREE.Mesh(geoEarth, earthMat);
 earthGroup.add(earthMesh);
 
 const cloudsMat = new THREE.MeshStandardMaterial({
-    map: loader.load('./src/clouds.jpg'),
+    map: loader.load('./assets/clouds.jpg'),
     transparent: true, opacity: 0.4,
-    alphaMap: loader.load('./src/cloudtrans.jpg'),
+    alphaMap: loader.load('./assets/cloudtrans.jpg'),
     depthWrite: false,
 });
 const cloudsMesh = new THREE.Mesh(geoEarth, cloudsMat);
@@ -129,7 +129,7 @@ cloudsMesh.scale.setScalar(1.01);
 earthGroup.add(cloudsMesh);
 
 const lightsMat = new THREE.MeshBasicMaterial({
-    map: loader.load('./src/lights.jpg'),
+    map: loader.load('./assets/lights.jpg'),
     blending: THREE.AdditiveBlending, transparent: true, opacity: 0.7,
 });
 const lightsMesh = new THREE.Mesh(geoEarth, lightsMat);
@@ -147,8 +147,8 @@ earthGroup.add(moonGroup);
 const moonMesh = new THREE.Mesh(
     new THREE.SphereGeometry(0.5, 16, 16),
     new THREE.MeshPhongMaterial({
-        map: loader.load('./src/moon.jpg'),
-        bumpMap: loader.load('./src/moon.jpg'),
+        map: loader.load('./assets/moon.jpg'),
+        bumpMap: loader.load('./assets/moon.jpg'),
         bumpScale: 0.08,
         shininess: 5,
     })
@@ -163,8 +163,8 @@ marsGroup.rotation.z = -25 * Math.PI / 180;
 scene.add(marsGroup);
 
 const marsMat = new THREE.MeshPhongMaterial({
-    map: loader.load('./src/mars.jpg'),
-    bumpMap: loader.load('./src/mars.jpg'),
+    map: loader.load('./assets/mars.jpg'),
+    bumpMap: loader.load('./assets/mars.jpg'),
     bumpScale: 0.12,
     shininess: 5,
 });
@@ -191,7 +191,7 @@ saturnGroup.rotation.z = -27 * Math.PI / 180;
 scene.add(saturnGroup);
 
 const saturnMat = new THREE.MeshPhongMaterial({
-    map: loader.load('./src/saturn.jpg'),
+    map: loader.load('./assets/saturn.jpg'),
     shininess: 8,
     emissive: 0x2a1800,
     emissiveIntensity: 0.1,
