@@ -51,8 +51,8 @@ main {
     align-items: center;
     justify-content: flex-start;
     min-height: 80vh;
-    background: transparent;
-    padding-left: 15px
+    padding-left: 20px;
+    border-radius: 15px;
 }
 
 .hero-text h1 {
@@ -338,6 +338,6 @@ h2::after {
 /* Desktop Polish */
 @media (min-width: 769px) {
     .hero-container {
-        background: linear-gradient(to right, rgba(5, 5, 5, 0.9), transparent);
+        background: linear-gradient(to right, rgba(12, 12, 12, 0.55), transparent);
     }
 }
