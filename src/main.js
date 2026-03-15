@@ -161,7 +161,7 @@ scene.add(marsGroup);
 
 const marsMat = new THREE.MeshPhongMaterial({
     map: loader.load('./assets/mars.jpg'),
-    bumpMap: loader.load('./assets/mars.jpg'),
+    bumpMap: loader.load('./assets/marsbump.jpg'),
     bumpScale: 0.12,
     shininess: 5,
 });
