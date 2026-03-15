@@ -334,10 +334,3 @@ h2::after {
         /* Swapping to brighter color for mobile visibility */
     }
 }
-
-/* Desktop Polish */
-@media (min-width: 769px) {
-    .hero-container {
-        background: linear-gradient(to right, rgba(12, 12, 12, 0.55), transparent);
-    }
-}

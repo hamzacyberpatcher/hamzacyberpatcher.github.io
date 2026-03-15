@@ -8,7 +8,7 @@ scene.fog = new THREE.FogExp2(0x000008, 0.008);
 
 /* camera */
 const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 2000);
-camera.position.set(0, 0, 8);
+camera.position.set(0, 0, 5);
 
 /* renderer */
 const renderer = new THREE.WebGLRenderer({
@@ -24,24 +24,23 @@ renderer.toneMappingExposure = 1.2;
 const loader = new THREE.TextureLoader();
 
 // ─── SCROLL CAMERA KEYFRAMES ────────────────────────────────────────────────
-// Each keyframe: { scrollY: 0–1, camPos, camTarget, fov }
 const keyframes = [
     {
         t: 0,
-        camPos: new THREE.Vector3(0, 0, 8),
-        camTarget: new THREE.Vector3(3, 0, 0),
+        camPos: new THREE.Vector3(0, 0, 5),
+        camTarget: new THREE.Vector3(4, 0, 0),
         fov: 75,
     },
     {
         t: 0.15,
         camPos: new THREE.Vector3(5, 2, 4),
-        camTarget: new THREE.Vector3(3, 0, 0),
+        camTarget: new THREE.Vector3(4, 0, 0),
         fov: 55,
     },
     {
         t: 0.3,
         camPos: new THREE.Vector3(3, 4, 9),
-        camTarget: new THREE.Vector3(3, 0, 0),
+        camTarget: new THREE.Vector3(4, 0, 0),
         fov: 50,
     },
     {
@@ -79,11 +78,9 @@ function lerpKeyframe(t) {
     }
     const span = b.t - a.t;
     const local = span === 0 ? 0 : (t - a.t) / span;
-    // smooth easing
     const s = local * local * (3 - 2 * local);
     const pos = a.camPos.clone().lerp(b.camPos, s);
 
-    // Pre-clamp: push interpolated position out of Earth before it feeds into smoothing
     const EARTH_CENTER = new THREE.Vector3();
     earthGroup.getWorldPosition(EARTH_CENTER);
     const EARTH_SAFE = 4.5;
@@ -102,7 +99,7 @@ function lerpKeyframe(t) {
 // ─── EARTH ────────────────────────────────────────────────────────────────────
 const earthGroup = new THREE.Group();
 earthGroup.rotation.z = -23.4 * Math.PI / 180;
-earthGroup.position.x = 3;
+earthGroup.position.x = 4;
 scene.add(earthGroup);
 
 const geoEarth = new THREE.IcosahedronGeometry(2.5, 16);
@@ -171,14 +168,12 @@ const marsMat = new THREE.MeshPhongMaterial({
 const marsMesh = new THREE.Mesh(new THREE.IcosahedronGeometry(1.4, 12), marsMat);
 marsGroup.add(marsMesh);
 
-// Mars atmosphere
 const marsAtmoMat = new THREE.MeshBasicMaterial({
     color: 0xff6633, transparent: true, opacity: 0.08,
     blending: THREE.AdditiveBlending, side: THREE.BackSide,
 });
 marsGroup.add(new THREE.Mesh(new THREE.IcosahedronGeometry(1.55, 12), marsAtmoMat));
 
-// Polar ice cap on Mars
 const polarCapMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 });
 const polarCap = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 8, 0, Math.PI * 2, 0, 0.4), polarCapMat);
 polarCap.position.set(0, 1.35, 0);
@@ -199,7 +194,6 @@ const saturnMat = new THREE.MeshPhongMaterial({
 const saturnMesh = new THREE.Mesh(new THREE.SphereGeometry(4, 32, 32), saturnMat);
 saturnGroup.add(saturnMesh);
 
-// Saturn bands (overlay)
 const bandMat = new THREE.MeshBasicMaterial({ color: 0xc8a85a, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending });
 for (let i = 0; i < 5; i++) {
     const bandGeo = new THREE.TorusGeometry(4.02 + i * 0.15, 0.05, 4, 80);
@@ -207,10 +201,8 @@ for (let i = 0; i < 5; i++) {
     saturnGroup.add(new THREE.Mesh(bandGeo, bandMat));
 }
 
-// Saturn rings
 function makeRing(inner, outer, color, opacity) {
     const geo = new THREE.RingGeometry(inner, outer, 128);
-    // fix UV so texture maps radially
     const pos = geo.attributes.position;
     const uv = geo.attributes.uv;
     for (let i = 0; i < pos.count; i++) {
@@ -231,14 +223,12 @@ saturnGroup.add(makeRing(6.4, 7.5, 0xc8a070, 0.4));
 saturnGroup.add(makeRing(7.7, 9.0, 0xb89060, 0.25));
 saturnGroup.add(makeRing(9.2, 9.8, 0xa07848, 0.15));
 
-// Saturn atmosphere
 const satAtmoMat = new THREE.MeshBasicMaterial({
     color: 0xffe0a0, transparent: true, opacity: 0.1,
     blending: THREE.AdditiveBlending, side: THREE.BackSide,
 });
 saturnGroup.add(new THREE.Mesh(new THREE.SphereGeometry(4.3, 32, 32), satAtmoMat));
 
-// Saturn moons
 function addSaturnMoon(dist, size, color, angle) {
     const m = new THREE.Mesh(
         new THREE.SphereGeometry(size, 10, 10),
@@ -275,7 +265,6 @@ makeNebula(-50, 2, -35, 0x200a00, 22, 0.09);
 const starField = new THREE.Group();
 scene.add(starField);
 
-// Dense background stars via Points for performance
 const starCount = 8000;
 const starPositions = new Float32Array(starCount * 3);
 const starColors = new Float32Array(starCount * 3);
@@ -294,7 +283,6 @@ starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
 const starMat = new THREE.PointsMaterial({ size: 0.35, vertexColors: true, sizeAttenuation: true });
 starField.add(new THREE.Points(starGeo, starMat));
 
-// Bright foreground feature stars
 for (let i = 0; i < 80; i++) {
     const size = THREE.MathUtils.randFloat(0.06, 0.2);
     const s = new THREE.Mesh(
@@ -311,12 +299,10 @@ const sunLight = new THREE.DirectionalLight(0xfff5e0, 3.0);
 sunLight.position.set(-5, 2, 3);
 scene.add(sunLight);
 
-// Rim light from the other side
 const rimLight = new THREE.DirectionalLight(0x002244, 0.5);
 rimLight.position.set(5, -1, -4);
 scene.add(rimLight);
 
-// Saturn key light
 const saturnLight = new THREE.PointLight(0xffeedd, 2, 80);
 saturnLight.position.set(-20, 5, 5);
 scene.add(saturnLight);
@@ -334,9 +320,8 @@ document.addEventListener('scroll', () => {
     targetScrollT = max > 0 ? window.scrollY / max : 0;
 });
 
-// Smooth camera targets
 let smoothCamPos = camera.position.clone();
-let smoothCamTarget = new THREE.Vector3(3, 0, 0);
+let smoothCamTarget = new THREE.Vector3(4, 0, 0);
 let smoothFov = 75;
 
 // ─── ANIMATION ────────────────────────────────────────────────────────────────
@@ -346,10 +331,8 @@ function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
-    // smooth scroll interpolation
     scrollT += (targetScrollT - scrollT) * 0.04;
 
-    // interpolate camera
     const kf = lerpKeyframe(scrollT);
     smoothCamPos.lerp(kf.camPos, 0.06);
     smoothCamTarget.lerp(kf.camTarget, 0.06);
@@ -360,35 +343,29 @@ function animate() {
     camera.fov = smoothFov;
     camera.updateProjectionMatrix();
 
-    // Clamp camera so it never enters Earth — compute actual world position each frame
     const earthWorldPos = new THREE.Vector3();
     earthGroup.getWorldPosition(earthWorldPos);
-    const EARTH_SAFE_DIST = 4.5; // well outside atmosphere (radius 2.7)
+    const EARTH_SAFE_DIST = 4.5;
     const toCamera = camera.position.clone().sub(earthWorldPos);
     if (toCamera.length() < EARTH_SAFE_DIST) {
         toCamera.normalize().multiplyScalar(EARTH_SAFE_DIST);
         camera.position.copy(earthWorldPos).add(toCamera);
         smoothCamPos.copy(camera.position);
-        // re-orient after position correction
         camera.lookAt(smoothCamTarget);
     }
 
-    // Earth
     earthMesh.rotateY(0.0006);
     cloudsMesh.rotateY(0.0008);
     lightsMesh.rotateY(0.0006);
     moonGroup.rotation.y = t * 0.12;
 
-    // Mars
     marsMesh.rotateY(0.0007);
 
-    // Saturn
     saturnMesh.rotateY(0.0003);
     titan.position.set(Math.cos(t * 0.15) * 12, 0.5, Math.sin(t * 0.15) * 12);
     rhea.position.set(Math.cos(t * 0.28 + 2) * 10, 0.5, Math.sin(t * 0.28 + 2) * 10);
     tethys.position.set(Math.cos(t * 0.44 + 4) * 8.5, 0.5, Math.sin(t * 0.44 + 4) * 8.5);
 
-    // Starfield subtle drift
     starField.rotation.x += 0.00004;
     starField.rotation.y += 0.00006;
 
@@ -407,25 +384,21 @@ function handleWindowResize() {
     if (width < 768) {
         earthGroup.position.x = 0;
         earthGroup.scale.setScalar(0.7);
-        // Re-aim camera and smooth target at centered Earth
         smoothCamTarget.set(0, 0, 0);
         camera.lookAt(0, 0, 0);
-        // Patch the Earth-facing keyframe targets to centre
         keyframes[0].camTarget.set(0, 0, 0);
         keyframes[1].camTarget.set(0, 0, 0);
         keyframes[2].camTarget.set(0, 0, 0);
-        // Shift cam positions for Earth keyframes inward
         keyframes[0].camPos.set(-3, 0, 8);
         keyframes[1].camPos.set(2, 2, 4);
         keyframes[2].camPos.set(0, 4, 9);
     } else {
-        earthGroup.position.x = 3;
+        earthGroup.position.x = 4;
         earthGroup.scale.setScalar(1);
-        // Restore desktop keyframes
-        keyframes[0].camPos.set(0, 0, 8);   keyframes[0].camTarget.set(3, 0, 0);
-        keyframes[1].camPos.set(5, 2, 4);   keyframes[1].camTarget.set(3, 0, 0);
-        keyframes[2].camPos.set(3, 4, 9);   keyframes[2].camTarget.set(3, 0, 0);
-        smoothCamTarget.set(3, 0, 0);
+        keyframes[0].camPos.set(0, 0, 5);   keyframes[0].camTarget.set(4, 0, 0);
+        keyframes[1].camPos.set(5, 2, 4);   keyframes[1].camTarget.set(4, 0, 0);
+        keyframes[2].camPos.set(3, 4, 9);   keyframes[2].camTarget.set(4, 0, 0);
+        smoothCamTarget.set(4, 0, 0);
     }
 }
 
